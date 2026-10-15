@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Produto — Painel Renato Pinheiro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="admin-header">
+            <h1><a href="produtos.html" style="color: var(--caramelo); text-decoration: none;">← Produtos</a></h1>
+            <button class="btn-logout" onclick="logout()">Sair</button>
+        </header>
+
+        <h2 id="page-title" class="mb-16">Novo produto</h2>
+
+        <div id="form-container">
+            <div class="state-loading" id="form-loading" style="display:none">Carregando produto...</div>
+
+            <form id="product-form" class="form-layout">
+                <div class="form-panel">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nome *</label>
+                            <input type="text" id="name" required maxlength="200">
+                        </div>
+                        <div class="form-group">
+                            <label for="slug">Slug *</label>
+                            <input type="text" id="slug" required maxlength="200" pattern="[a-z0-9]+(-[a-z0-9]+)*">
+                            <div class="hint">Gerado do nome. Formato: letras-minusculas-com-hifens</div>
+                            <div class="error-text" id="slug-error" style="display:none"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Categoria *</label>
+                            <select id="category" required>
+                                <option value="">Selecione...</option>
+                                <option value="Kits">Kits</option>
+                                <option value="Reparadores">Reparadores</option>
+                                <option value="Protetores térmicos">Protetores térmicos</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Preço (R$) *</label>
+                            <input type="number" id="price" required min="0" step="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="brand">Marca</label>
+                            <input type="text" id="brand" maxlength="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="volume_label">Volume</label>
+                            <input type="text" id="volume_label" maxlength="50" placeholder="Ex.: 300ml">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="short_description">Descrição curta</label>
+                        <textarea id="short_description" rows="2" maxlength="500"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="full_description">Descrição completa</label>
+                        <textarea id="full_description" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Indicado para</label>
+                        <div class="chips-container" id="chips-container">
+                            <input type="text" class="chips-input" id="chips-input" placeholder="Digite e pressione Enter...">
+                        </div>
+                        <div class="hint">Pressione Enter para adicionar. Clique no × para remover.</div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="background_variant">Variante do card</label>
+                            <select id="background_variant">
+                                <option value="escuro">Escuro</option>
+                                <option value="claro">Claro</option>
+                                <option value="creme">Creme</option>
+                            </select>
+                            <div class="mt-8 flex-center">
+                                <span class="color-swatch" id="variant-swatch" style="background: #2C2420;"></span>
+                                <span class="hint" id="variant-label">Fundo escuro</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="badge_tag">Badge</label>
+                            <input type="text" id="badge_tag" maxlength="50" placeholder="Ex.: Mais pedido">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="display_order">Ordem de exibição</label>
+                            <input type="number" id="display_order" min="0" step="1">
+                        </div>
+                        <div class="form-group" style="display: flex; gap: 24px; align-items: flex-end; padding-bottom: 4px;">
+                            <label class="flex-center">
+                                <input type="checkbox" id="is_visible" checked> Visível no site
+                            </label>
+                            <label class="flex-center">
+                                <input type="checkbox" id="is_featured"> Destaque
+                            </label>
+                        </div>
+                    </div>
+
+                    <hr style="border: none; border-top: 1px solid var(--cinza-borda); margin: 20px 0;">
+
+                    <div class="form-group">
+                        <label>Fotos do produto</label>
+                        <div class="photo-upload-area" id="photo-upload-area">
+                            📷 Clique ou arraste imagens aqui<br>
+                            <span class="hint">JPEG, PNG ou WebP — máx. 5 MB cada. A primeira foto é a capa.</span>
+                        </div>
+                        <input type="file" id="photo-input" multiple accept="image/jpeg,image/png,image/webp" style="display:none">
+                        <div class="photo-grid" id="photo-grid"></div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+                        <a href="produtos.html" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary" id="save-btn">Salvar produto</button>
+                    </div>
+                </div>
+
+                <!-- Preview -->
+                <div class="card-preview-box">
+                    <h3>Preview do card</h3>
+                    <div class="preview-card" id="preview-card">
+                        <div class="fallback-icon" id="preview-img">📦</div>
+                        <div class="preview-card-body bg-escuro" id="preview-body">
+                            <div class="preview-badge" id="preview-badge" style="display:none"></div>
+                            <div class="preview-category" id="preview-category">Categoria</div>
+                            <div class="preview-name" id="preview-name">Nome do produto</div>
+                            <div class="preview-brand" id="preview-brand"></div>
+                            <div class="preview-price" id="preview-price">R$ 0,00</div>
+                            <div class="preview-tags" id="preview-tags"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="produto-form.js"></script>
+</body>
+</html>
