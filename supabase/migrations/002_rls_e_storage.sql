@@ -35,11 +35,7 @@ BEGIN
 END;
 $$;
 
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- IMPORTANTE: insira seu e-mail REAL abaixo antes de rodar!
--- Esse INSERT deve ser executado uma vez no SQL Editor.
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- INSERT INTO admin_users (email) VALUES ('COLE_SEU_EMAIL_AQUI');
+ INSERT INTO admin_users (email) VALUES ('renatopinheiro323@gmail.com');
 
 
 -- ============================================================

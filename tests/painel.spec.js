@@ -211,6 +211,13 @@ test.describe('Login', () => {
     });
 
     test('shows config error when not configured', async ({ page }) => {
+        await page.route('**/supabase-config.js', async (route) => {
+            await route.fulfill({
+                status: 200,
+                contentType: 'application/javascript',
+                body: "const SUPABASE_URL = 'COLE_SUA_PROJECT_URL_AQUI'; const SUPABASE_ANON_KEY = 'COLE_SUA_ANON_KEY_AQUI';"
+            });
+        });
         await page.goto('/login.html');
         await expect(page.locator('.state-error')).toBeVisible();
         await expect(page.locator('.state-error')).toContainText('supabase-config.js');
